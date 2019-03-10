@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+    <head>
+        <title>休假记录</title>
+        <meta charset="utf-8">
+        <!-- scheduler -->
+        <script src="dhtmlxscheduler.js" charset="utf-8"></script>
+        <link href="dhtmlxscheduler_material.css" rel="stylesheet" type="text/css" charset="utf-8">
+        <script src="locale_cn.js" charset="utf-8"></script>
+        <style>
+            html, body{
+                margin:4px;
+                padding:0px;
+                height:100%;
+                overflow:hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <div style="width:100%;height:32px;background-color:royalblue;color: white;padding-left:20px;
+        padding-top: 4px;box-sizing:border-box;border-radius: 3px;">
+            休假记录
+        </div>
+        <div id="scheduler_here" class="dhx_cal_container" 
+            style='width:100%; height:100%;'>
+            <div class="dhx_cal_navline">
+                <div class="dhx_cal_prev_button">&nbsp;</div>
+                <div class="dhx_cal_next_button">&nbsp;</div>
+                <div class="dhx_cal_today_button"></div>
+                <div class="dhx_cal_date"></div>
+            </div>
+            <div class="dhx_cal_header"></div>
+            <div class="dhx_cal_data"></div>
+        </div>
+        <script>
+            scheduler.config.xml_date="%Y-%m-%d %H:%i";
+            scheduler.config.readonly = true;
+			scheduler.init("scheduler_here", new Date(), "month");
+			scheduler.setLoadMode("day");
+			// load data from backend
+			scheduler.load("/events", "json");
+			// connect backend to scheduler
+			var dp = new dataProcessor("/events");
+			dp.init(scheduler);
+			// set data exchange mode
+            dp.setTransactionMode("REST");
+        </script>
+    </body>
+</html>
